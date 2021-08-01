@@ -1,1 +1,1 @@
-# movies-for-server
+# movies-explorer-api
