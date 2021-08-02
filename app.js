@@ -55,11 +55,13 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
+/* роут краш-теста для проверки
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
+*/
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -72,8 +74,6 @@ app.post('/signin', celebrate({
     password: Joi.string().required(),
   }),
 }), login);
-
-app.post('/signout', logout);
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
@@ -97,6 +97,7 @@ app.post('/signup', celebrate({
 
 app.use(auth);
 
+app.post('/signout', logout);
 app.use('/users', routerUser);
 app.use('/movies', routerMovie);
 
@@ -117,6 +118,7 @@ app.use((err, req, res, next) => {
         ? 'На сервере произошла ошибка'
         : message,
     });
+  next();
 });
 
 app.listen(PORT, () => {

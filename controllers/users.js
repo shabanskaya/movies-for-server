@@ -66,7 +66,10 @@ module.exports.updateUserInfo = (req, res, next) => {
         next(new NotFoundError('Произошла ошибка: пользователь с указанным _id не найден'));
       } else if (err.name === 'ValidationError') {
         next(new BadRequestError('Произошла ошибка: переданы некорректные данные при обновлении профиля'));
+      } else if (err.name === 'MongoError' && err.code === 11000) {
+        next(new ConflictError('Пользователь с указанным email уже зарегистрирован'));
       } else {
+        // res.send(err);
         next(err);
       }
     });
